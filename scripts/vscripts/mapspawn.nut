@@ -1,9 +1,11 @@
 //Script written by Lazyneer
 
 hasRecievedCash <- {}
+deathStreak <- {}
 for(local i = 1; i <= Constants.Server.MAX_PLAYERS; i++)
 {
     hasRecievedCash[i] <- false
+    deathStreak[i] <- 0
 }
 
 function OnGameEvent_teamplay_round_start(params)
@@ -40,12 +42,22 @@ function OnGameEvent_player_spawn(params)
         client.GrantOrRemoveAllUpgrades(true, false)
         hasRecievedCash[client.entindex()] = true
     }
+
+    if(deathStreak[client.entindex()] >= 3)
+    {
+        AddCurrency(client, 100)
+        deathStreak[client.entindex()] = 0
+    }
 }
 
 function OnGameEvent_player_disconnect(params)
 {
     local client = GetPlayerFromUserID(params.userid)
-    hasRecievedCash[client.entindex()] = false
+    if(client.IsValid())
+    {
+        hasRecievedCash[client.entindex()] = false
+        deathStreak[client.entindex()] = 0
+    }
 }
 
 function ResetPlayers()
@@ -53,6 +65,7 @@ function ResetPlayers()
     for(local i = 1; i <= Constants.Server.MAX_PLAYERS; i++)
     {
         hasRecievedCash[i] = false
+        deathStreak[i] = 0
     }
 }
 
@@ -193,17 +206,37 @@ function AddCurrency(client, cash)
 
 function OnGameEvent_player_death(params)
 {
+    //Dead Ringer
+    if(params.death_flags & 32)
+        return
+
     local attacker = GetPlayerFromUserID(params.attacker)
     local assister = GetPlayerFromUserID(params.assister)
     local victim = GetPlayerFromUserID(params.userid)
     
     if(attacker != null)
+    {
         if(attacker != victim && attacker.GetTeam() != victim.GetTeam())
+        {
             AddCurrency(attacker, 100)
+            deathStreak[attacker.entindex()] = 0
+            deathStreak[victim.entindex()] += 1
+        }
+    }
 
     if(assister != null)
+    {
         if(assister != victim && assister.GetTeam() != victim.GetTeam())
-            AddCurrency(assister, 50)    
+        {
+            if(assister.GetPlayerClass() == Constants.ETFClass.TF_CLASS_MEDIC)
+            {
+                AddCurrency(assister, 100)
+                deathStreak[assister.entindex()] = 0
+            }
+            else
+                AddCurrency(assister, 50)
+        }
+    }
 }
 
 function OnGameEvent_teamplay_point_captured(params)
