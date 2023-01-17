@@ -15,12 +15,12 @@ function OnGameEvent_teamplay_round_start(params)
     ResetCanteens()
 
     //Use this function to spawn an upgrade station
-    SpawnUpgradeSign(-1120, -1648, 368, 90, 112, 32, 32)
-    SpawnUpgradeSign(816, -1888, 416, 0, 160, 32, 32)
+    SpawnUpgradeSign(-1120, -1648, 368, 90, 112)
+    SpawnUpgradeSign(816, -1888, 416, 0, 160)
     SpawnUpgradeStation(-1184, -4104, -192, 0)
     SpawnUpgradeStation(1184, 4104, -192, 180)
-    SpawnUpgradeSign(-816, 1888, 416, 180, 160, 32, 32)
-    SpawnUpgradeSign(1120, 1648, 368, 270, 112, 32, 32)
+    SpawnUpgradeSign(-816, 1888, 416, 180, 160)
+    SpawnUpgradeSign(1120, 1648, 368, 270, 112)
 }
 
 function OnGameEvent_teamplay_round_win(params)
@@ -94,13 +94,10 @@ function ClearUpgradeStations()
 }
 
 //Spawns a full upgrade station, only right angles allowed
-function SpawnUpgradeStation(x, y, z, angle, solid = true)
+function SpawnUpgradeStation(x, y, z, angle)
 {
     local pos = Vector(x, y, z)
     local ang = Vector(0, angle, 0)
-    local isSolid = 6
-    if(!solid)
-        isSolid = 0
 
     SpawnEntityFromTable("prop_dynamic", 
     {
@@ -109,7 +106,7 @@ function SpawnUpgradeStation(x, y, z, angle, solid = true)
         origin      = pos,
         angles      = ang,
         disableshadows  = 1,
-        solid       = isSolid
+        solid       = 6
     })
 
     SpawnEntityFromTable("prop_dynamic", 
@@ -160,10 +157,12 @@ function SpawnUpgradeStation(x, y, z, angle, solid = true)
 }
 
 //Spawns a sign, works with any rotation
-function SpawnUpgradeSign(x, y, z, angle, height = 128, size = 64, offset = 0)
+function SpawnUpgradeSign(x, y, z, angle, height = 128)
 {
     local pos = Vector(x, y, z)
     local ang = Vector(0, angle, 0)
+    local size = 32
+    local offset = 32
 
     SpawnEntityFromTable("prop_dynamic", 
     {
