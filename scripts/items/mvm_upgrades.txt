@@ -334,7 +334,7 @@
 			"icon"		"achievements/tf_scout_first_blood"
 			"increment"	"1"
 			"cap"		"3"
-			"cost"		"350"
+			"cost"		"250"
 		}
 		"37"
 		{
@@ -374,7 +374,7 @@
 			"icon"		"achievements/tf_medic_charge_blocker"
 			"increment"	"1"
 			"cap"		"3"
-			"cost"		"200"
+			"cost"		"150"
 		}
 		"44"
 		{
@@ -382,7 +382,7 @@
 			"icon"		"achievements/tf_scout_assist_medic"
 			"increment"	"1"
 			"cap"		"4"
-			"cost"		"250"
+			"cost"		"300"
 		}
 		"46"
 		{
@@ -413,8 +413,8 @@
 			"attribute"	"generate rage on heal"	// Projectile Shield
 			"icon"		"achievements/tf_demoman_kill_x_defending"
 			"increment"	"1"
-			"cap"		"2"
-			"cost"		"300"
+			"cap"		"1"
+			"cost"		"450"
 		}
 		"50"
 		{
