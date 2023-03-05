@@ -38,8 +38,19 @@ function OnGameEvent_player_spawn(params)
     local client = GetPlayerFromUserID(params.userid)
     if(!hasRecievedCash[client.entindex()])
     {
+        local playerClass = client.GetPlayerClass()
+        local health = client.GetMaxHealth()
+        for(local i = 1; i <= 9; i++)
+        {
+            client.SetPlayerClass(i)
+            client.Regenerate(true)
+            client.GrantOrRemoveAllUpgrades(true, false)
+        }
+
+        client.SetPlayerClass(playerClass)
+        client.Regenerate(true)
+        client.SetHealth(health)
         client.SetCurrency(500)
-        client.GrantOrRemoveAllUpgrades(true, false)
         hasRecievedCash[client.entindex()] = true
     }
 
@@ -258,7 +269,7 @@ function OnGameEvent_teamplay_flag_event(params)
     //Capture
     if(params.eventtype == 2)
     {
-        local player = GetPlayerFromUserID(params.player)
+        local player = PlayerInstanceFromIndex(params.player)
         for(local i = 1; i <= Constants.Server.MAX_PLAYERS; i++)
         {
             local client = PlayerInstanceFromIndex(i)
